@@ -1,0 +1,55 @@
+[gd_scene load_steps=10 format=3 uid="uid://cn54e28c0qj0w"]
+
+[ext_resource type="Texture2D" uid="uid://bedlvhyycndgk" path="res://icon.svg" id="1_p81dw"]
+[ext_resource type="PackedScene" uid="uid://c2l1rsix2grjd" path="res://player.tscn" id="2_piptr"]
+[ext_resource type="Script" path="res://Rotation.cs" id="3_kphlb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_aiwng"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_xs0e7"]
+sky_material = SubResource("ProceduralSkyMaterial_aiwng")
+
+[sub_resource type="Environment" id="Environment_cfenx"]
+background_mode = 2
+sky = SubResource("Sky_xs0e7")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p320c"]
+albedo_texture = ExtResource("1_p81dw")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dnfu6"]
+size = Vector2(50, 50)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_8q2rt"]
+data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cfenx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 30.241, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_p320c")
+mesh = SubResource("PlaneMesh_dnfu6")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_8q2rt")
+
+[node name="Player" parent="." instance=ExtResource("2_piptr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.37968, 0)
+
+[node name="Rotation" type="Marker3D" parent="."]
+script = ExtResource("3_kphlb")
+
+[node name="PlayerCamera" type="Camera3D" parent="Rotation"]
+transform = Transform3D(1, 0, 0, 0, 0.262189, 0.965017, 0, -0.965017, 0.262189, 0, 9.30493, 2.10768)
+fov = 99.3211
