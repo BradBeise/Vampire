@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bnfx2lu8uuk0l"]
+
+[ext_resource type="Script" path="res://enemy.cs" id="1_iwitd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ve7we"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_iwwsw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2am4j"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k041e"]
+
+[node name="Enemy" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18437, 0)
+script = ExtResource("1_iwitd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ve7we")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_iwwsw")
+surface_material_override/0 = SubResource("StandardMaterial3D_2am4j")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.19692, 0.00212208, -0.00751655, -0.00178678, 0.232035, 0.00951581, 0.00149727, -0.00219221, 0.999926, 0, 0.317319, -0.707019)
+mesh = SubResource("BoxMesh_k041e")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

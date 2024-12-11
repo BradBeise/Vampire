@@ -1,6 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cn54e28c0qj0w"]
+[gd_scene load_steps=12 format=3 uid="uid://cn54e28c0qj0w"]
 
+[ext_resource type="Script" path="res://Level.cs" id="1_ijc8y"]
 [ext_resource type="Texture2D" uid="uid://bedlvhyycndgk" path="res://icon.svg" id="1_p81dw"]
+[ext_resource type="PackedScene" uid="uid://bnfx2lu8uuk0l" path="res://enemy.tscn" id="2_m2l5d"]
 [ext_resource type="PackedScene" uid="uid://c2l1rsix2grjd" path="res://player.tscn" id="2_piptr"]
 [ext_resource type="Script" path="res://Rotation.cs" id="3_kphlb"]
 
@@ -27,6 +29,8 @@ size = Vector2(50, 50)
 data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
 
 [node name="World" type="Node3D"]
+script = ExtResource("1_ijc8y")
+EnemyScene = ExtResource("2_m2l5d")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_cfenx")
@@ -53,3 +57,6 @@ script = ExtResource("3_kphlb")
 [node name="PlayerCamera" type="Camera3D" parent="Rotation"]
 transform = Transform3D(1, 0, 0, 0, 0.262189, 0.965017, 0, -0.965017, 0.262189, 0, 9.30493, 2.10768)
 fov = 99.3211
+
+[node name="EnemySpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.54889)
