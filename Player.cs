@@ -2,17 +2,25 @@ using Godot;
 
 public partial class Player : Godot.CharacterBody3D
 {
-    public float CurrentSpeed = 15.0f;
-    public const float ConstSpeed = 10.0f;
-    public const float SprintSpeed = 15.0f;
-    public const float JumpVelocity = 4.5f;
+    private float CurrentSpeed = 15.0f;
+    private const float ConstSpeed = 10.0f;
+    private const float SprintSpeed = 15.0f;
+    private const float JumpVelocity = 4.5f;
 
+    private GunController GunController;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        GunController = GetNode<GunController>("GunController");
+    }
+
     public override void _PhysicsProcess(double delta)
     {
+        // Movement Logic
         Vector3 velocity = Velocity;
 
         // Add the gravity.
@@ -49,5 +57,11 @@ public partial class Player : Godot.CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+
+        // Shoot Logic
+        if (Input.IsActionPressed("LMB"))
+        {
+            GunController.Shoot();
+        }
     }
 }

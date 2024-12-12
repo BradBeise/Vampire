@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://3cvb20c83txd"]
+
+[ext_resource type="Script" path="res://Gun.cs" id="1_g7t47"]
+[ext_resource type="PackedScene" uid="uid://cghq7cvv7a5s6" path="res://Bullet.tscn" id="2_ddk87"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lcbuf"]
+
+[node name="Gun" type="Node3D"]
+transform = Transform3D(-1.0031, 0, 1.70889e-07, 0, 1, 0, -1.51464e-07, 0, -1.13175, 0, 0, 0.9)
+script = ExtResource("1_g7t47")
+Bullet = ExtResource("2_ddk87")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.16, 0, 0, 0, 0.168, 0, 0, 0, 0.8, 0, 0, 0.4)
+mesh = SubResource("BoxMesh_lcbuf")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]

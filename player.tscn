@@ -1,43 +1,43 @@
 [gd_scene load_steps=9 format=3 uid="uid://c2l1rsix2grjd"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_bfr61"]
+[ext_resource type="Script" path="res://GunController.cs" id="2_iah7n"]
+[ext_resource type="PackedScene" uid="uid://3cvb20c83txd" path="res://Gun.tscn" id="3_2i18p"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qxgxh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1es88"]
 albedo_color = Color(0.282353, 0.282353, 0.282353, 1)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4f82y"]
-
 [sub_resource type="SphereMesh" id="SphereMesh_xsf84"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xm1pv"]
 albedo_color = Color(0, 1, 1, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_w6ua0"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_itsjj"]
-albedo_color = Color(0, 0, 0, 1)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4f82y"]
 
 [node name="Player" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1.41978, 0)
 script = ExtResource("1_bfr61")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Body" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.432432, 0)
 mesh = SubResource("CapsuleMesh_qxgxh")
 surface_material_override/0 = SubResource("StandardMaterial3D_1es88")
+
+[node name="Eyes" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(0.908057, 0, 0, 0, 0.631409, 0, 0, 0, 0.458804, 0, 0.484577, -0.380923)
+mesh = SubResource("SphereMesh_xsf84")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_xm1pv")
+
+[node name="Hand" type="Marker3D" parent="Body"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.313769, 0, -0.323849)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.412125, 0)
 shape = SubResource("CapsuleShape3D_4f82y")
 
-[node name="Eyes" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.908057, 0, 0, 0, 0.631409, 0, 0, 0, 0.458804, 0, 0.052145, -0.380923)
-mesh = SubResource("SphereMesh_xsf84")
-surface_material_override/0 = SubResource("StandardMaterial3D_xm1pv")
-
-[node name="Gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.142127, 0, 0, 0, 0.165945, 0, 0, 0, 0.83422, 0.292767, -0.480567, -0.654962)
-mesh = SubResource("BoxMesh_w6ua0")
-surface_material_override/0 = SubResource("StandardMaterial3D_itsjj")
+[node name="GunController" type="Node" parent="."]
+script = ExtResource("2_iah7n")
+StartingWeapon = ExtResource("3_2i18p")

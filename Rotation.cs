@@ -3,14 +3,15 @@ using System;
 
 public partial class Rotation : Marker3D
 {
-    Camera3D camera;
-    Player player;
+    private Camera3D camera;
+    private Player player;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        camera = (Camera3D)GetNode("PlayerCamera");
-        player = (Player)GetNode("../Player");
+        camera = GetNode<Camera3D>("PlayerCamera");
+
+        player = GetNode<Player>("../Player");
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,6 +37,6 @@ public partial class Rotation : Marker3D
             player.LookAt(playerLookPos, Vector3.Up);
         }
 
-        camera.Position = player.Position + new Vector3(0, 10, 2);
+        camera.Position = player.Position + new Vector3(0, 40, 10);
     }
 }
