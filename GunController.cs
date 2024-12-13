@@ -40,7 +40,6 @@ public partial class GunController : Node
 			EquippedWeapon.QueueFree();
 		}
 
-		GD.Print($"Equipping gun: {weapon}");
 		EquippedWeapon = weapon;
 		Hand.AddChild(EquippedWeapon);
     }

@@ -14,43 +14,61 @@ public partial class enemy : CharacterBody3D
     private int Health;
 
     private Player Player;
-
-    public override void _Ready()
-    {
-        Player = GetNode<Player>("../Player");
-        Health = 100;
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        var playerLocation = Player.Position;
-
-        var look = new Vector3(playerLocation.X, Position.Y, playerLocation.Z);
-
-        LookAt(look, Vector3.Up);
-
-        Velocity = Vector3.Forward * CurrentSpeed;
-
-        Velocity = Velocity.Rotated(Vector3.Up, Rotation.Y);
-
-        MoveAndSlide();
-    }
+    private NavigationAgent3D NavigationAgent;
 
     // This function will be called from the Main scene.
-	// TODO: Better path finding. Maybe A*?
     public void Initialize(Vector3 startPosition, Vector3 playerPosition)
     {
         LookAtFromPosition(startPosition, playerPosition, Vector3.Up);
 
         CurrentSpeed = GD.RandRange(MinSpeed, MaxSpeed);
-        
-        Velocity = Vector3.Forward * CurrentSpeed;
-        
+
+        //Velocity = Vector3.Forward * CurrentSpeed;
+
+        //Velocity = Velocity.Rotated(Vector3.Up, Rotation.Y);
+    }
+
+    public override void _Ready()
+    {
+        Player = GetNode<Player>("../Player");
+        NavigationAgent = GetNode<NavigationAgent3D>("NavigationAgent");
+
+        NavigationAgent.GetNextPathPosition();
+
+        MakePath();
+
+        Health = 100;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        var dir = ToLocal(NavigationAgent.GetNextPathPosition()).Normalized();
+
+        LookAt(Player.Position);
+
+        Velocity = dir * CurrentSpeed;
         Velocity = Velocity.Rotated(Vector3.Up, Rotation.Y);
+
+        MoveAndSlide();
+    }
+
+    private void MakePath()
+    {
+        NavigationAgent.TargetPosition = Player.GlobalPosition;
     }
 
 	private void OnVisibilityNotifierScreenExited()
 	{
 		QueueFree();
 	}
+
+    private void OnTimerTimeout()
+    {
+        MakePath();
+    }
+
+    private void OnCharacterDeath()
+    {
+        QueueFree();
+    }
 }

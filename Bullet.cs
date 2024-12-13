@@ -6,6 +6,7 @@ public partial class Bullet : Node3D
 {
 	public int Speed = 70;
 
+	private int Damage = 10;
 	private double Timer;
 	private const double TTL = 1;
 
@@ -25,4 +26,16 @@ public partial class Bullet : Node3D
 
 		if (Timer >= TTL) QueueFree();
 	}
+
+	private void OnAreaBodyEntered(Node3D body)
+	{
+		QueueFree();
+
+		if (body.HasNode("Stats"))
+		{
+			var statsNode = (Stats) body.FindChild("Stats");
+
+			statsNode.TakeDamage(Damage);
+		}
+    }
 }
