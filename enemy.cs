@@ -11,7 +11,9 @@ public partial class enemy : CharacterBody3D
     public int MaxSpeed = 5;
 
     private int CurrentSpeed;
-    private int Health;
+
+    private bool IsAttacking = false;
+    private Timer AttackTimer;
 
     private Player Player;
     private NavigationAgent3D NavigationAgent;
@@ -30,14 +32,16 @@ public partial class enemy : CharacterBody3D
 
     public override void _Ready()
     {
+        CurrentSpeed = GD.RandRange(MinSpeed, MaxSpeed);
+
         Player = GetNode<Player>("../Player");
         NavigationAgent = GetNode<NavigationAgent3D>("NavigationAgent");
 
         NavigationAgent.GetNextPathPosition();
 
-        MakePath();
+        AttackTimer = GetNode<Timer>("AttackTimer");
 
-        Health = 100;
+        MakePath();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -57,14 +61,44 @@ public partial class enemy : CharacterBody3D
         NavigationAgent.TargetPosition = Player.GlobalPosition;
     }
 
-	private void OnVisibilityNotifierScreenExited()
+    private void AttackPlayer()
+    {
+        var playerStatsNode = Player.GetNode<Stats>("Stats");
+        playerStatsNode.TakeDamage(5);
+
+        GD.Print($"Player HP: {playerStatsNode.CurrentHp}");
+    }
+
+    private void OnVisibilityNotifierScreenExited()
 	{
 		QueueFree();
 	}
 
+    private void OnAttackRadiusBodyEntered(Node3D node)
+    {
+        if (node == Player)
+        {
+            AttackPlayer();
+            AttackTimer.Start();
+        }
+    }
+
+    private void OnAttackRadiusBodyExit(Node3D node)
+    {
+        if (node == Player)
+        {
+            AttackTimer.Stop();
+            GD.Print("No more attack");
+        }
+    }
+
     private void OnTimerTimeout()
     {
         MakePath();
+    }
+    private void OnAttackTimerTimeout()
+    {
+        AttackPlayer();
     }
 
     private void OnCharacterDeath()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2l1rsix2grjd"]
+[gd_scene load_steps=10 format=3 uid="uid://c2l1rsix2grjd"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_bfr61"]
 [ext_resource type="Script" path="res://GunController.cs" id="2_iah7n"]
 [ext_resource type="PackedScene" uid="uid://3cvb20c83txd" path="res://Gun.tscn" id="3_2i18p"]
+[ext_resource type="PackedScene" uid="uid://djghh2sy56x5p" path="res://Stats.tscn" id="4_jabfv"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qxgxh"]
 
@@ -41,3 +42,7 @@ shape = SubResource("CapsuleShape3D_4f82y")
 [node name="GunController" type="Node" parent="."]
 script = ExtResource("2_iah7n")
 StartingWeapon = ExtResource("3_2i18p")
+
+[node name="Stats" parent="." instance=ExtResource("4_jabfv")]
+
+[connection signal="CharacterDeath" from="Stats" to="." method="OnCharacterDeath"]

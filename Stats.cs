@@ -3,8 +3,8 @@ using System;
 
 public partial class Stats : Node
 {
-	private int MaxHp = 100;
-	private int CurrentHp;
+	public int MaxHp = 100;
+	public int CurrentHp;
 
     [Signal]
     public delegate void CharacterDeathEventHandler();

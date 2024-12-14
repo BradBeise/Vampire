@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnfx2lu8uuk0l"]
+[gd_scene load_steps=9 format=3 uid="uid://bnfx2lu8uuk0l"]
 
 [ext_resource type="Script" path="res://enemy.cs" id="1_iwitd"]
 [ext_resource type="PackedScene" uid="uid://djghh2sy56x5p" path="res://Stats.tscn" id="2_frcq2"]
@@ -14,6 +14,9 @@ albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aa0xg"]
 albedo_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_s2edw"]
+radius = 1.30757
 
 [node name="Enemy" type="CharacterBody3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.02649, 0)
@@ -34,7 +37,6 @@ mesh = SubResource("BoxMesh_k041e")
 surface_material_override/0 = SubResource("StandardMaterial3D_aa0xg")
 
 [node name="NavigationAgent" type="NavigationAgent3D" parent="."]
-debug_enabled = true
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2
@@ -42,6 +44,18 @@ autostart = true
 
 [node name="Stats" parent="." instance=ExtResource("2_frcq2")]
 
+[node name="AttackRadius" type="Area3D" parent="."]
+transform = Transform3D(1.15, 0, 0, 0, 1.15, 0, 0, 0, 1.15, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackRadius"]
+shape = SubResource("CylinderShape3D_s2edw")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 0.5
+
 [connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
 [connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]
 [connection signal="CharacterDeath" from="Stats" to="." method="OnCharacterDeath"]
+[connection signal="body_entered" from="AttackRadius" to="." method="OnAttackRadiusBodyEntered"]
+[connection signal="body_exited" from="AttackRadius" to="." method="OnAttackRadiusBodyExit"]
+[connection signal="timeout" from="AttackTimer" to="." method="OnAttackTimerTimeout"]

@@ -64,4 +64,9 @@ public partial class Player : Godot.CharacterBody3D
             GunController.Shoot();
         }
     }
+
+    private void OnCharacterDeath()
+    {
+        QueueFree();
+    }
 }
