@@ -46,19 +46,25 @@ public partial class enemy : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        var dir = ToLocal(NavigationAgent.GetNextPathPosition()).Normalized();
+        if (IsInstanceValid(Player))
+        {
+            var dir = ToLocal(NavigationAgent.GetNextPathPosition()).Normalized();
 
-        LookAt(Player.Position);
+            LookAt(Player.Position);
 
-        Velocity = dir * CurrentSpeed;
-        Velocity = Velocity.Rotated(Vector3.Up, Rotation.Y);
+            Velocity = dir * CurrentSpeed;
+            Velocity = Velocity.Rotated(Vector3.Up, Rotation.Y);
 
-        MoveAndSlide();
+            MoveAndSlide();
+        }
     }
 
     private void MakePath()
     {
-        NavigationAgent.TargetPosition = Player.GlobalPosition;
+        if (IsInstanceValid(Player))
+        {
+            NavigationAgent.TargetPosition = Player.GlobalPosition;
+        }
     }
 
     private void AttackPlayer()
